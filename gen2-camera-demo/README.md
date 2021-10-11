@@ -67,3 +67,6 @@ For the bad looking areas, these are caused by the objects being too close to th
 
 These areas will be improved with `extended = True`, however Extended Disparity and Subpixel cannot operate both at the same time.
 
+### Debug
+
+Press "s" in order to create a new folder within `depthai-experiments/gen2-camera-demo` containing all images and the point cloud (if activated).

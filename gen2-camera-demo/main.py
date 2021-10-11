@@ -38,8 +38,8 @@ subpixel = False   # Better accuracy for longer distance, fractional disparity 3
 median   = dai.StereoDepthProperties.MedianFilter.KERNEL_7x7
 
 # Sanitize some incompatible options
-if lrcheck or extended or subpixel:
-    median   = dai.StereoDepthProperties.MedianFilter.MEDIAN_OFF # TODO
+# if lrcheck or extended or subpixel:
+#     median   = dai.StereoDepthProperties.MedianFilter.MEDIAN_OFF # TODO
 
 print("StereoDepth config options:")
 print("    Left-Right check:  ", lrcheck)
@@ -308,8 +308,51 @@ def test_pipeline():
                 if name in ['left', 'right', 'depth']: continue
                 frame = convert_to_cv2_frame(name, image)
                 cv2.imshow(name, frame)
+
             if cv2.waitKey(1) == ord('q'):
                 break
+            if cv2.waitKey(1) == ord("s"):
+                pcl = None
+                if pcl_converter is not None:
+                    pcl = pcl_converter.pcl
+                write_debug_files(convert_to_cv2_frame, queue_list=q_list, pcl=pcl)
+
+# debug only
+import cv2
+import open3d
+import os
+from datetime import datetime
+from pathlib import Path
+
+def ensure_debug_folder_path():
+    path_to_current_file = Path(__file__).parent
+    debug_path = path_to_current_file.joinpath(
+        f"__debug_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S-%f')}__"
+    )
+    debug_path.mkdir(parents=True, exist_ok=True)
+    return str(debug_path.absolute())
+
+def write_debug_files(
+    convert_to_cv2_frame,
+    queue_list = None,
+    pcl = None,
+    path = None
+):
+    if path is None:
+        path = ensure_debug_folder_path()
+
+    if queue_list is not None:
+        for queue in queue_list:
+            name  = queue.getName()
+            image = queue.get()
+            frame = convert_to_cv2_frame(name, image)
+            cv2.imwrite(os.path.join(path, f"{name}.png"), frame)
+    if pcl is not None:
+        open3d.io.write_point_cloud(
+            os.path.join(path, f"pcl.ply"),
+            pcl,
+            print_progress=True
+        )
 
 
 test_pipeline()

@@ -1,0 +1,54 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "47bfc67d1299f39be01c2f8372aa8706359b6c1d817d71fab24876a2f8245519"
+        },
+        "pipfile-spec": 6,
+        "requires": {
+            "python_version": "3.8"
+        },
+        "sources": [
+            {
+                "name": "pypi",
+                "url": "https://pypi.org/simple",
+                "verify_ssl": true
+            },
+            {
+                "name": "luxonis",
+                "url": "https://artifacts.luxonis.com/artifactory/luxonis-python-snapshot-local",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "depthai": {
+            "hashes": [
+                "sha256:03fc3d035c8835424da5cc0024628c27f842e6a8000afadc3f0292fd5e2f68c7",
+                "sha256:043cf3725d67b9b97cc9098b874bc6f81453112dae82c1ef6fc8acaf158cf499",
+                "sha256:094261ceb61d6f6e38770f6afe5e4a406449f8944416078a66ec7b13f687c118",
+                "sha256:0b13e4ea0bad11ea8c6f6fcb146c7546558fdd42ff4318b8a5a6e82f0ca6774b",
+                "sha256:3636b8bc504c41387df0f13646100573d4b2e433620b45f16a313be7e4c09835",
+                "sha256:416b7c9a24b397ea35d687944d1552cc068425b6577ded585fd51eb161a2187b",
+                "sha256:4764a40977ae29e1ee2cd4ee5743965b73f270dfc3eeb4b883db6cb53d8a3455",
+                "sha256:6011cb9728180fd3bf8db9103112760d53978ab0923fd57907033bbe888e5587",
+                "sha256:6436c01916f76173afb5f7700ed880a9536d920606967691761f62755b021239",
+                "sha256:6fd8dc30c89dfcc2d9c8877133a3bb32210a61773f1f7787eacbd6ae8530df15",
+                "sha256:8a94f166dece69926e93d7d23d757bd38a26b6aab47d2b08a3972c355cc1ae55",
+                "sha256:9dc09c2a0da8f2c47f78cbfa720f9dbe3bd0e8384bb070327ee95d3f49396f58",
+                "sha256:b56ff8e4868419fbc7dbbc4de99594257ffd845cac233b82d0113cd88e72ec32",
+                "sha256:c3759d506897db98b0b1d84a95fd54901c5cf66062002f85f1168395ca56d413",
+                "sha256:cc6c52e7d1b3eebbb4bba467dca18a023ff36b34cc92fc9d5164049595f2fe5a",
+                "sha256:cceaff2dd58c42d4b55a222c427df226ddb47275a2fcd7acea349533ec2f884e",
+                "sha256:ce9749ccf865b98cbf5c65fb2cba48eaa0abc318b100c6cf519928922b04fad5",
+                "sha256:cf0ac157938f5e9340f4dc64dba09a20bba0175da13cd354a74e9f6b01f43c25",
+                "sha256:d0893bd028d0762a981275f2dafa187611dfb3b327f78fc94cb181b8975793ad",
+                "sha256:d14714cedc6d0c24e0651a53105b8f79fc2c8e7c7b6be78fd2cd9b0041feb02b",
+                "sha256:d503330eda034bde6e2472c360178d8dc198c57739209cdc8fb260f3d3c83c2b",
+                "sha256:f691ff7bfaf6830d8c5571953e739579234979377261aacb964d924d4d10a62e"
+            ],
+            "index": "pypi",
+            "version": "==2.10.0.0.dev+55fe8891a01229bf6a59dfb6cdafb4f660bce619"
+        }
+    },
+    "develop": {}
+}
