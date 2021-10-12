@@ -1,6 +1,7 @@
 import cv2
 import open3d
 import os
+import numpy as np
 from datetime import datetime
 from pathlib import Path
 
@@ -22,14 +23,27 @@ def write_debug_files(
 
     for name, image in image_list:
         cv2.imwrite(os.path.join(path, f"{name}.png"), image)
+        if name == "depth":
+            cv2.imwrite(
+                os.path.join(path, f"{name}_colored.png"),
+                cv2.applyColorMap(image.astype(np.uint8), cv2.COLORMAP_HOT)
+            )
 
     if pcl_converter is not None:
         pcl_converter.vis.capture_screen_image(os.path.join(path, f"open3d_screen.png"))
         pcl_converter.vis.capture_depth_image(os.path.join(path, f"open3d_depth.png"))
         open3d.io.write_point_cloud(
-            os.path.join(path, f"pcl.ply"),
+            os.path.join(path, f"point_cloud_cleaned.ply"),
             pcl_converter.pcl,
             print_progress=True
+        )
+        open3d.io.write_point_cloud(
+            os.path.join(path, f"point_cloud.pcd"),
+            pcl_converter.pcd
+        )
+        open3d.io.write_point_cloud(
+            os.path.join(path, f"point_cloud.ply"),
+            pcl_converter.pcd
         )
 
 debug_call = 0

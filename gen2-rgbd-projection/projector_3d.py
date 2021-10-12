@@ -10,6 +10,7 @@ class PointCloudVisualizer():
         self.depth_map = None
         self.rgb = None
         self.pcl = None
+        self.pcd = None
 
         self.pinhole_camera_intrinsic = o3d.camera.PinholeCameraIntrinsic(width,
                                                                          height,
@@ -34,12 +35,12 @@ class PointCloudVisualizer():
         if self.pcl is None:
             self.pcl = o3d.geometry.PointCloud.create_from_rgbd_image(rgbd_image, self.pinhole_camera_intrinsic)
         else:
-            pcd = o3d.geometry.PointCloud.create_from_rgbd_image(rgbd_image, self.pinhole_camera_intrinsic)
+            self.pcd = o3d.geometry.PointCloud.create_from_rgbd_image(rgbd_image, self.pinhole_camera_intrinsic)
             # Remove noise
-            pcd = pcd.remove_statistical_outlier(30, 0.1)[0]
+            cleaned_pcd = self.pcd.remove_statistical_outlier(30, 0.1)[0]
 
-            self.pcl.points = pcd.points
-            self.pcl.colors = pcd.colors
+            self.pcl.points = cleaned_pcd.points
+            self.pcl.colors = cleaned_pcd.colors
             # Flip it, otherwise the pointcloud will be upside down
             self.pcl.transform([[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
         return self.pcl

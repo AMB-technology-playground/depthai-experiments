@@ -3,6 +3,7 @@
 import cv2
 import depthai as dai
 import numpy as np
+from write_debug_files import write_debug_files_on_nth_call
 
 try:
     from projector_3d import PointCloudVisualizer
@@ -51,6 +52,19 @@ monoRight.out.link(stereo.right)
 stereo.depth.link(xoutDepth.input)
 stereo.rectifiedRight.link(xoutRectifR.input)
 
+def convert_to_cv2_frame(queue):
+    name = queue.getName()
+    data = queue.get()
+
+    if name == "rgb":
+        frame = cv2.cvtColor(data.getCvFrame(), cv2.COLOR_BGR2RGB)
+    elif name == "depth":
+        frame = data.getCvFrame().astype(np.uint16)
+    else:
+        frame = data.getFrame()
+
+    return name, frame
+
 
 # Connect to device and start pipeline
 with dai.Device(pipeline) as device:
@@ -63,16 +77,8 @@ with dai.Device(pipeline) as device:
     pcl_frames = [None, None] # depth, rectified_right frames
 
     while True:
-        for i, q in enumerate(q_list):
-            name = q.getName()
-            data = q.get()
-
-            if name == "rgb":
-                frame = cv2.cvtColor(data.getCvFrame(), cv2.COLOR_BGR2RGB)
-            elif name == "depth":
-                frame = data.getCvFrame().astype(np.uint16)
-            else:
-                frame = data.getFrame()
+        for i, queue in enumerate(q_list):
+            name, frame = convert_to_cv2_frame(queue)
             cv2.imshow(name, frame)
 
             if i < 2:
@@ -80,6 +86,12 @@ with dai.Device(pipeline) as device:
         
         pcl_converter.rgbd_to_projection(pcl_frames[0], pcl_frames[1], True)
         pcl_converter.visualize_pcd()
+
+        write_debug_files_on_nth_call(
+            10,
+            image_list=[convert_to_cv2_frame(queue) for queue in q_list],
+            pcl_converter=pcl_converter
+        )
 
         if cv2.waitKey(1) == ord('q'):
             break
