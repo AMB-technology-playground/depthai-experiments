@@ -56,9 +56,8 @@ def create_rgb_pipeline():
     stereo.depth.link(depthOut.input)
 
     streams = ["rgb", "depth"]
-    maxDisparity = stereo.getMaxDisparity()
 
-    return pipeline, streams, maxDisparity
+    return pipeline, streams
 
 def convert_to_cv2_frame(queue):
     name = queue.getName()
@@ -72,7 +71,7 @@ def display_pointcloud(frameRgb, frameDepth):
     pcl_converter.visualize_pcd()
 
 
-pipeline, streams, MAX_DISPARIRTY = create_rgb_pipeline()
+pipeline, streams = create_rgb_pipeline()
 
 
 # Connect to device and start pipeline
