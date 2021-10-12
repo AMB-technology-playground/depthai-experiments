@@ -49,6 +49,7 @@ class PointCloudVisualizer():
             self.vis.add_geometry(self.pcl)
             origin = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.3, origin=[0, 0, 0])
             self.vis.add_geometry(origin)
+            self.vis.get_view_control().set_zoom(0.001)
             self.isstarted = True
         else:
             self.vis.update_geometry(self.pcl)

@@ -3,6 +3,7 @@
 import cv2
 import numpy as np
 import depthai as dai
+from write_debug_files import write_debug_files_on_nth_call
 
 try:
     from projector_3d import PointCloudVisualizer
@@ -59,6 +60,11 @@ def create_rgb_pipeline():
 
     return pipeline, streams, maxDisparity
 
+def convert_to_cv2_frame(queue):
+    name = queue.getName()
+    image = queue.get()
+
+    return name, image.getCvFrame() if name == "rgb" else np.ascontiguousarray(image.getFrame())
 
 def display_pointcloud(frameRgb, frameDepth):
     frameRgb = cv2.cvtColor(frameRgb, cv2.COLOR_BGR2RGB)
@@ -80,13 +86,18 @@ with dai.Device(pipeline) as device:
 
     while True:
         for i, queue in enumerate(queue_list):
-            name = queue.getName()
-            image = queue.get()
+            name, image = convert_to_cv2_frame(queue)
 
-            pcl_frames[i] = image.getCvFrame() if name == "rgb" else np.ascontiguousarray(image.getFrame())
-            cv2.imshow(name, pcl_frames[i])
+            pcl_frames[i] = image
+            cv2.imshow(name, image)
 
         display_pointcloud(*pcl_frames)
+
+        write_debug_files_on_nth_call(
+            10,
+            image_list=[convert_to_cv2_frame(queue) for queue in queue_list],
+            pcl_converter=pcl_converter
+        )
 
         if cv2.waitKey(1) == ord("q"):
             break
